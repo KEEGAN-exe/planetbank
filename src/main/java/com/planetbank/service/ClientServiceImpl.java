@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planetbank.entity.Client;
+import com.planetbank.entity.Credential;
 import com.planetbank.repository.ClientRepository;
 
 @Service
@@ -14,13 +15,18 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientRepository clientRepoitory;
-		
+	
+	@Autowired
+	private CredentialService credentialService;
+	
 	String generatedUsername;
 	String generatedPassword;
 	
 	@Override
 	public void insert(Client client) {
 		clientRepoitory.save(client);
+		Credential credential = new Credential(null,generatedUsername,generatedPassword,client);
+		credentialService.insert(credential);
 	}
 
 	@Override
