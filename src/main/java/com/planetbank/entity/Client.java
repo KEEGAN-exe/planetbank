@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -38,6 +39,8 @@ public class Client implements Serializable {
 	@Column(nullable = false)
 	private String phone;
 	@Column(nullable = false)
+	private String city;
+	@Column(nullable = false)
 	private String country;
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
@@ -49,11 +52,16 @@ public class Client implements Serializable {
 	@JsonIgnore
 	private Boolean state;
 
+	@OneToOne(mappedBy = "client")
+	@JsonIgnore
+	private Credential credential;
+
 	public Client() {
 	}
 
 	public Client(Integer idClient, String name, String lastname, Integer age, String dni, String address, String phone,
-			String country, LocalDate birthday, LocalDate registrationDate, Boolean state) {
+			String city, String country, LocalDate birthday, LocalDate registrationDate, Boolean state,
+			Credential credential) {
 		this.idClient = idClient;
 		this.name = name;
 		this.lastname = lastname;
@@ -61,15 +69,33 @@ public class Client implements Serializable {
 		this.dni = dni;
 		this.address = address;
 		this.phone = phone;
+		this.city = city;
 		this.country = country;
 		this.birthday = birthday;
 		this.registrationDate = registrationDate;
 		this.state = state;
+		this.credential = credential;
 	}
 
 	@PrePersist
 	public void persistDate() {
 		registrationDate = LocalDate.now();
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public Credential getCredential() {
+		return credential;
+	}
+
+	public void setCredential(Credential credential) {
+		this.credential = credential;
 	}
 
 	public Integer getIdClient() {
@@ -128,12 +154,12 @@ public class Client implements Serializable {
 		this.phone = phone;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getCity() {
+		return city;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public LocalDate getBirthday() {

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,13 +25,26 @@ public class Credential implements Serializable {
 	@Column(nullable = false)
 	private String password;
 
+	@OneToOne
+	@JoinColumn(name = "id_client")
+	private Client client;
+
 	public Credential() {
 	}
 
-	public Credential(Integer idCredential, String username, String password) {
+	public Credential(Integer idCredential, String username, String password, Client client) {
 		this.idCredential = idCredential;
 		this.username = username;
 		this.password = password;
+		this.client = client;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public Integer getIdCredential() {
