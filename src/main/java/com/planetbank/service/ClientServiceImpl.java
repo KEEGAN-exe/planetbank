@@ -87,4 +87,29 @@ public class ClientServiceImpl implements ClientService {
 
 		return randomString.toString();
 	}
+
+	@Override
+	public Client findByDni(String dni) {
+		return clientRepoitory.findByDni(dni);
+	}
+
+	@Override
+	public Collection<Client> findByCountry(String country) {
+		return clientRepoitory.findByCountry(country);
+	}
+
+	@Override
+	public Collection<Client> findByCity(String city) {
+		return clientRepoitory.findByCity(city);
+	}
+
+	@Override
+	public Collection<Client> findByUnderAge(Integer age) {
+		return clientRepoitory.findByUnderAge(age);
+	}
+
+	@Override
+	public Collection<Client> findByOverAge(Integer age) {
+		return clientRepoitory.findByOverAge(age);
+	}
 }

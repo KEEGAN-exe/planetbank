@@ -11,4 +11,5 @@ public interface CredentialService {
 	public abstract void delete(Integer credentialId);
 	public abstract Credential findById(Integer credentialId);
 	public abstract Collection<Credential> findAll();
+	public abstract Collection<Credential> findByUsername(String username);
 }

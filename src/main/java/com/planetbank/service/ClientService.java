@@ -13,4 +13,9 @@ public interface ClientService {
 	public abstract Collection<Client> findAll();
 	public abstract String generatedUser(Client client);
 	public abstract String generateTemporalPassword(Client client);
+	public abstract Client findByDni(String dni);
+	public abstract Collection<Client> findByCountry(String country);
+	public abstract Collection<Client> findByCity(String country);
+	public abstract Collection<Client> findByUnderAge(Integer age);
+	public abstract Collection<Client> findByOverAge(Integer age);
 }

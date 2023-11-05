@@ -1,5 +1,7 @@
 package com.planetbank.controller;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +68,57 @@ public class ClientController {
 		}
 		return new ResponseEntity<>("Client updated error", HttpStatus.BAD_REQUEST);
 	}
+	
+	@GetMapping("{dni}")
+	public ResponseEntity<?> searchByDni(@PathVariable String dni) {
+		Client client = service.findByDni(dni);
+		if(client != null) {
+			return new ResponseEntity<>(client,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/search/country/{country}")
+	public ResponseEntity<?> searchByCountry(@PathVariable String country){
+		Collection<Client> client = service.findByCountry(country);
+		if(client != null) {
+			return new ResponseEntity<>(client,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/search/city/{city}")
+	public ResponseEntity<?> searchByCity(@PathVariable String city){
+		Collection<Client> client = service.findByCity(city);
+		if(client != null) {
+			return new ResponseEntity<>(client,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/search/underage/{age}")
+	public ResponseEntity<?> searchByUnderAge(@PathVariable Integer age){
+		Collection<Client> client = service.findByUnderAge(age);
+		if(client != null) {
+			return new ResponseEntity<>(client,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/search/overage/{age}")
+	public ResponseEntity<?> searchByOverAge(@PathVariable Integer age){
+		Collection<Client> client = service.findByOverAge(age);
+		if(client != null) {
+			return new ResponseEntity<>(client,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 
 }

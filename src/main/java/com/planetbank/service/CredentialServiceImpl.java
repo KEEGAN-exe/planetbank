@@ -38,4 +38,9 @@ public class CredentialServiceImpl implements CredentialService{
 	public Collection<Credential> findAll() {
 		return repository.findAll();
 	}
+
+	@Override
+	public Collection<Credential> findByUsername(String username) {
+		return repository.findByUsername(username);
+	}
 }
