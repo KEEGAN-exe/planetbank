@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,15 +35,34 @@ public class Account implements Serializable {
 	@Column(nullable = false)
 	private Boolean status;
 
+	@OneToOne
+	@JoinColumn(name = "id_client")
+	private Client client;
+
 	public Account() {
 	}
 
-	public Account(Integer idAccount, String accountNumber, Double balance, LocalDate openingDate, Boolean status) {
+	public Account(Integer idAccount, String accountNumber, Double balance, LocalDate openingDate, Boolean status,
+			Client client) {
 		this.idAccount = idAccount;
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.openingDate = openingDate;
 		this.status = status;
+		this.client = client;
+	}
+
+	@PrePersist
+	public void PreDate() {
+		this.openingDate = LocalDate.now();
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public Integer getIdAccount() {

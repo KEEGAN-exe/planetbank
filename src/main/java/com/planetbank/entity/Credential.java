@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "credentials")
 public class Credential implements Serializable {
@@ -27,6 +29,7 @@ public class Credential implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "id_client")
+	@JsonIgnore
 	private Client client;
 
 	public Credential() {

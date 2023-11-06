@@ -56,12 +56,16 @@ public class Client implements Serializable {
 	@JsonIgnore
 	private Credential credential;
 
+	@OneToOne(mappedBy = "client")
+	@JsonIgnore
+	private Account account;
+
 	public Client() {
 	}
 
 	public Client(Integer idClient, String name, String lastname, Integer age, String dni, String address, String phone,
 			String city, String country, LocalDate birthday, LocalDate registrationDate, Boolean state,
-			Credential credential) {
+			Credential credential, Account account) {
 		this.idClient = idClient;
 		this.name = name;
 		this.lastname = lastname;
@@ -75,11 +79,20 @@ public class Client implements Serializable {
 		this.registrationDate = registrationDate;
 		this.state = state;
 		this.credential = credential;
+		this.account = account;
 	}
 
 	@PrePersist
 	public void persistDate() {
 		registrationDate = LocalDate.now();
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public String getCountry() {
