@@ -33,7 +33,9 @@ public class Account implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
 	private LocalDate openingDate;
 	@Column(nullable = false)
-	private Boolean status;
+	private Boolean state;
+	@Column(nullable = false)
+	private String status;
 
 	@OneToOne
 	@JoinColumn(name = "id_client")
@@ -42,12 +44,13 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Account(Integer idAccount, String accountNumber, Double balance, LocalDate openingDate, Boolean status,
-			Client client) {
+	public Account(Integer idAccount, String accountNumber, Double balance, LocalDate openingDate, Boolean state,
+			String status, Client client) {
 		this.idAccount = idAccount;
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.openingDate = openingDate;
+		this.state = state;
 		this.status = status;
 		this.client = client;
 	}
@@ -55,6 +58,18 @@ public class Account implements Serializable {
 	@PrePersist
 	public void PreDate() {
 		this.openingDate = LocalDate.now();
+	}
+
+	public Boolean getState() {
+		return state;
+	}
+
+	public void setState(Boolean state) {
+		this.state = state;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Client getClient() {
@@ -95,14 +110,6 @@ public class Account implements Serializable {
 
 	public void setOpeningDate(LocalDate openingDate) {
 		this.openingDate = openingDate;
-	}
-
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
 	}
 
 }
