@@ -26,5 +26,8 @@ public interface ClientRepository extends JpaRepository<Client, Integer>{
 	
 	@Query(value = "SELECT * FROM clients WHERE state = true", nativeQuery = true)
 	public abstract Collection<Client> finAllClient();
+	
+	@Query(value = "SELECT * FROM clients WHERE dni = ?", nativeQuery = true)
+	public abstract Client findByFirstDni(String dni);
 }
 

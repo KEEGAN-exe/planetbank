@@ -18,4 +18,5 @@ public interface ClientService {
 	public abstract Collection<Client> findByCity(String country);
 	public abstract Collection<Client> findByUnderAge(Integer age);
 	public abstract Collection<Client> findByOverAge(Integer age);
+	public abstract Client findByFirstDni(String dni);
 }

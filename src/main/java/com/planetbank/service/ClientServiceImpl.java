@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.planetbank.entity.Client;
 import com.planetbank.entity.Credential;
@@ -23,6 +24,7 @@ public class ClientServiceImpl implements ClientService {
 	String generatedPassword;
 	
 	@Override
+	@Transactional
 	public void insert(Client client) {
 		clientRepoitory.save(client);
 		Credential credential = new Credential(null,generatedUsername,generatedPassword,client);
@@ -111,5 +113,10 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Collection<Client> findByOverAge(Integer age) {
 		return clientRepoitory.findByOverAge(age);
+	}
+
+	@Override
+	public Client findByFirstDni(String dni) {
+		return clientRepoitory.findByFirstDni(dni);
 	}
 }
