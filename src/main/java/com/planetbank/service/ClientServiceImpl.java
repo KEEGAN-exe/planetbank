@@ -40,8 +40,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Collection<Client> findAll() {
-		return clientRepoitory.findAll();
+	public Collection<Client> finAllClient() {
+		return clientRepoitory.finAllClient();
 	}
 
 	@Override

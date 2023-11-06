@@ -1,5 +1,6 @@
 package com.planetbank.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,14 @@ public class CredentialController {
 
 	@GetMapping
 	public ResponseEntity<?> getCredentials() {
-		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+		Collection<Credential> credentials = service.findAll();
+		Collection<Credential> result = new ArrayList<>();
+		for(Credential credential : credentials) {
+			if(credential.getClient().getState() == true) {
+				result.add(credential);
+			}
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PatchMapping("{credentialId}")

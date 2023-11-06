@@ -23,5 +23,8 @@ public interface ClientRepository extends JpaRepository<Client, Integer>{
 	
 	@Query(value = "SELECT * FROM clients WHERE age > ? AND state = true", nativeQuery = true)
 	public abstract Collection<Client> findByOverAge(Integer age);
+	
+	@Query(value = "SELECT * FROM clients WHERE state = true", nativeQuery = true)
+	public abstract Collection<Client> finAllClient();
 }
 

@@ -10,7 +10,7 @@ public interface ClientService {
 	public abstract void update(Client client);
 	public abstract void delete(Integer clientId);
 	public abstract Client findById(Integer clientId);
-	public abstract Collection<Client> findAll();
+	public abstract Collection<Client> finAllClient();
 	public abstract String generatedUser(Client client);
 	public abstract String generateTemporalPassword(Client client);
 	public abstract Client findByDni(String dni);

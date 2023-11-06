@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class ClientController {
 
 	@GetMapping
 	public ResponseEntity<?> getClients() {
-		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+		return new ResponseEntity<>(service.finAllClient(), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -119,6 +120,15 @@ public class ClientController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	
-
+	@DeleteMapping("{clientId}")
+	public ResponseEntity<?> deleteClient(@PathVariable Integer clientId){
+		Client client = service.findById(clientId);
+		if(client != null) {
+			client.setState(false);
+			service.update(client);
+			return new ResponseEntity<>("Deleted client", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }
