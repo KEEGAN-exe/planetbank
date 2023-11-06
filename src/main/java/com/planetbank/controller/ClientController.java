@@ -77,13 +77,14 @@ public class ClientController {
 	@PatchMapping("{clientId}")
 	public ResponseEntity<?> editClient(@RequestBody Client newClient, @PathVariable Integer clientId) {
 		try {
-			if (newClient.getDni().length() != 8 && newClient != null) {
+			if (newClient.getDni() != null && newClient.getDni().length() != 8) {
 				return new ResponseEntity<>("Invalid document.", HttpStatus.BAD_REQUEST);
 			} else if (newClient.getBirthday() != null
 					&& newClient.getBirthday().isBefore(LocalDate.now().minusYears(80))) {
-				return new ResponseEntity<>("Invalid birthday", HttpStatus.BAD_REQUEST);
-			} else if (newClient.getBirthday() != null && newClient.getBirthday().isAfter(LocalDate.now())) {
-				return new ResponseEntity<>("Invalid birthday", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>("Invalid birthday.", HttpStatus.BAD_REQUEST);
+			} else if (newClient.getBirthday() != null
+					&& newClient.getBirthday().isAfter(LocalDate.now().minusYears(18))) {
+				return new ResponseEntity<>("Invalid birthday.", HttpStatus.BAD_REQUEST);
 			}
 
 			Client oldClient = service.findById(clientId);
