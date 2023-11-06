@@ -13,6 +13,7 @@ public interface ClientService {
 	public abstract Collection<Client> finAllClient();
 	public abstract String generatedUser(Client client);
 	public abstract String generateTemporalPassword(Client client);
+	public abstract String generateAccountNumber();
 	public abstract Client findByDni(String dni);
 	public abstract Collection<Client> findByCountry(String country);
 	public abstract Collection<Client> findByCity(String country);

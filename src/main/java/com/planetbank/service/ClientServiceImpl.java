@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.planetbank.entity.Account;
 import com.planetbank.entity.Client;
 import com.planetbank.entity.Credential;
 import com.planetbank.repository.ClientRepository;
@@ -16,19 +17,26 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientRepository clientRepoitory;
-	
+
 	@Autowired
 	private CredentialService credentialService;
-	
+
+	@Autowired
+	private AccountService accountService;
+
 	String generatedUsername;
 	String generatedPassword;
-	
+	String accountNumber = "";
+
 	@Override
 	@Transactional
 	public void insert(Client client) {
 		clientRepoitory.save(client);
-		Credential credential = new Credential(null,generatedUsername,generatedPassword,client);
+		Credential credential = new Credential(null, generatedUsername, generatedPassword, client);
 		credentialService.insert(credential);
+		Account account = new Account(null, accountNumber, 0.0, null, true, "active", client);
+		accountService.insert(account);
+		
 	}
 
 	@Override
@@ -77,18 +85,6 @@ public class ClientServiceImpl implements ClientService {
 		generatedPassword = password;
 		return password;
 	}
-	
-	public String generateRandomString(int length) {
-		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		StringBuilder randomString = new StringBuilder();
-		Random random = new Random();
-
-		for (int i = 0; i < length; i++) {
-			randomString.append(characters.charAt(random.nextInt(characters.length())));
-		}
-
-		return randomString.toString();
-	}
 
 	@Override
 	public Client findByDni(String dni) {
@@ -118,5 +114,28 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client findByFirstDni(String dni) {
 		return clientRepoitory.findByFirstDni(dni);
+	}
+
+	@Override
+	public String generateAccountNumber() {
+		Random random = new Random();
+		for(int i = 0; i < 20; i++) {			
+			Integer azar = random.nextInt(10);
+			accountNumber += azar.toString();
+		}
+		
+		return accountNumber;
+	}
+	
+	public String generateRandomString(int length) {
+		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		StringBuilder randomString = new StringBuilder();
+		Random random = new Random();
+
+		for (int i = 0; i < length; i++) {
+			randomString.append(characters.charAt(random.nextInt(characters.length())));
+		}
+
+		return randomString.toString();
 	}
 }

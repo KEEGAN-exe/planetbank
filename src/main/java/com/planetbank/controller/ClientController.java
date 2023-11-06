@@ -64,9 +64,10 @@ public class ClientController {
 			client.setAge(age.getYear());
 			String generatedUser = service.generatedUser(client);
 			String generatedTemporalPassword = service.generateTemporalPassword(client);
+			String generatedAccountNumber = service.generateAccountNumber();
 			service.insert(client);
 			return new ResponseEntity<>("Registered successfully \nusername: " + generatedUser + "\nTemporal password: "
-					+ generatedTemporalPassword, HttpStatus.OK);
+					+ generatedTemporalPassword + "\nAccountNumber: " + generatedAccountNumber, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ResponseEntity<>("Client registration error", HttpStatus.INTERNAL_SERVER_ERROR);
