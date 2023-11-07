@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "accounts")
 public class Account implements Serializable {
@@ -33,6 +35,7 @@ public class Account implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
 	private LocalDate openingDate;
 	@Column(nullable = false)
+	@JsonIgnore
 	private Boolean state;
 	@Column(nullable = false)
 	private String status;
@@ -58,6 +61,10 @@ public class Account implements Serializable {
 	@PrePersist
 	public void PreDate() {
 		this.openingDate = LocalDate.now();
+	}
+
+	public String getStatus() {
+		return status;
 	}
 
 	public Boolean getState() {
