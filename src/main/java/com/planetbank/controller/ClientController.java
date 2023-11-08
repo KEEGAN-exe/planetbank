@@ -45,10 +45,10 @@ public class ClientController {
 				return new ResponseEntity<>("Invalid document", HttpStatus.BAD_REQUEST);
 			} else if (findClient != null && !findClient.getState()) {
 				return new ResponseEntity<>(
-						"This document '" + client.getDni() + "' already exists but is deactivated.",
+						"This client with document '" + client.getDni() + "' already exists but is deactivated.",
 						HttpStatus.BAD_REQUEST);
 			} else if (findClient != null && findClient.getState()) {
-				return new ResponseEntity<>("This document '" + client.getDni() + "' already exists.",
+				return new ResponseEntity<>("This client with document '" + client.getDni() + "' already exists.",
 						HttpStatus.BAD_REQUEST);
 			} else if (client.getPhone().length() < 9 || client.getPhone().length() > 9) {
 				return new ResponseEntity<>("Invalid phone number", HttpStatus.BAD_REQUEST);
@@ -227,12 +227,13 @@ public class ClientController {
 	@DeleteMapping("{clientId}")
 	public ResponseEntity<?> deleteClient(@PathVariable Integer clientId) {
 		Client client = service.findById(clientId);
-		if (client != null) {
+		if (client != null && client.getState()) {
 			client.setState(false);
+			client.getAccount().setStatus("disabled");
 			service.update(client);
 			return new ResponseEntity<>("Deleted client", HttpStatus.OK);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>("The client with id: " + clientId + " has already been deleted or is not yet registered.",HttpStatus.NOT_FOUND);
 	}
 }
