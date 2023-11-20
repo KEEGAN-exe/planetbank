@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planetbank.entity.Client;
+import com.planetbank.mapper.ClientMapper;
 import com.planetbank.service.ClientService;
+import com.planetbank.util.Mapper;
 
 @RestController
 @RequestMapping("/client")
@@ -27,7 +29,7 @@ public class ClientController {
 
 	@GetMapping
 	public ResponseEntity<?> getClients() {
-		Collection<Client> client = service.finAllClient();
+		Collection<ClientMapper> client = Mapper.toClient(service.finAllClient());
 		if (!client.isEmpty()) {
 			return new ResponseEntity<>(client, HttpStatus.OK);
 		}
