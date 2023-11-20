@@ -34,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
 		clientRepoitory.save(client);
 		Credential credential = new Credential(null, generatedUsername, generatedPassword, client);
 		credentialService.insert(credential);
-		Account account = new Account(null, accountNumber, 0.0, null, true, "enabled", client);
+		Account account = new Account(null, accountNumber, 0.0, null, true, "enabled", null ,client);
 		accountService.insert(account);
 		
 	}
