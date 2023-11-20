@@ -81,42 +81,50 @@ public class AccountController {
 
 	@PostMapping("/deposit")
 	public ResponseEntity<?> addMoney(@RequestBody Movement data) {
-		Account account = service.findByAccountNumber(data.getAccount_number());
-		if (account != null) {
-			if (data.getAmount() > 0) {
-				account.setBalance(account.getBalance() + data.getAmount());
-				service.update(account);
-				return new ResponseEntity<>("Deposit completed successfully.", HttpStatus.OK);
+		try {
+			Account account = service.findByAccountNumber(data.getAccount_number());
+			if (account != null) {
+				if (data.getAmount() > 0) {
+					account.setBalance(account.getBalance() + data.getAmount());
+					service.update(account);
+					return new ResponseEntity<>("Deposit completed successfully.", HttpStatus.OK);
+				}
+				return new ResponseEntity<>("Invalid amount", HttpStatus.BAD_REQUEST);
 			}
-			return new ResponseEntity<>("Invalid amount", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Invalid account", HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>("Invalid account", HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping("/withdraw")
 	public ResponseEntity<?> withdrawMoney(@RequestBody Movement data) {
-		Account account = service.findByAccountNumber(data.getAccount_number());
-		if (account != null) {
-			if (!account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
-				return new ResponseEntity<>("The withdrawal key does not match the account number",
-						HttpStatus.FORBIDDEN);
-			}
-			if (account.getWithdrawalKey() != null) {
-				if (data.getAmount() < 0 || data.getAmount() > account.getBalance()) {
-					return new ResponseEntity<>("Invalid amount, your balance: $" + account.getBalance(),
-							HttpStatus.BAD_REQUEST);
-				}
-				if (account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
-					account.setBalance(account.getBalance() - data.getAmount());
-					service.update(account);
-					return new ResponseEntity<>("Withdrawmoney completed successfully.", HttpStatus.OK);
-				}
+		try {
+			Account account = service.findByAccountNumber(data.getAccount_number());
+			if (account != null) {
+				if (account.getWithdrawalKey() != null) {
+					if (data.getAmount() <= 0 || data.getAmount() > account.getBalance()) {
+						return new ResponseEntity<>("Invalid amount, your balance: $" + account.getBalance(),
+								HttpStatus.BAD_REQUEST);
+					}
+					if (account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
+						account.setBalance(account.getBalance() - data.getAmount());
+						service.update(account);
+						return new ResponseEntity<>("Withdrawmoney completed successfully.", HttpStatus.OK);
+					}
 
-			} else {
-				return new ResponseEntity<>("Change the withdrawal key to perform this operation",
-						HttpStatus.FORBIDDEN);
+				} else {
+					return new ResponseEntity<>("Change the withdrawal key to perform this operation",
+							HttpStatus.FORBIDDEN);
+				}
+				if (!account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
+					return new ResponseEntity<>("The withdrawal key does not match the account number",
+							HttpStatus.FORBIDDEN);
+				}
 			}
+			return new ResponseEntity<>("Invalid account", HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>("Invalid account", HttpStatus.NOT_FOUND);
 	}
 }
