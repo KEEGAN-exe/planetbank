@@ -92,7 +92,7 @@ public class AccountController {
 				if (data.getAmount() > 0) {
 					account.setBalance(account.getBalance() + data.getAmount());
 					service.update(account);
-					History record = new History(null, "deposit", data.getAmount(), account.getClient().getIdClient(), null, account, account.getAccountNumber());
+					History record = new History(null, "deposit", data.getAmount(), account.getClient().getIdClient(), null, account);
 					history.insert(record);
 					return new ResponseEntity<>("Deposit completed successfully.", HttpStatus.OK);
 				}
@@ -117,7 +117,7 @@ public class AccountController {
 					if (account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
 						account.setBalance(account.getBalance() - data.getAmount());
 						service.update(account);
-						History record = new History(null, "withdraw", data.getAmount(), account.getClient().getIdClient(), null, account, account.getAccountNumber());
+						History record = new History(null, "withdraw", data.getAmount(), account.getClient().getIdClient(), null, account);
 						history.insert(record);
 						return new ResponseEntity<>("Withdrawmoney completed successfully.", HttpStatus.OK);
 					}

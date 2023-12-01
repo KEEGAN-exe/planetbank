@@ -37,34 +37,23 @@ public class History implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
-	@Column(nullable = false)
-	private String account_number;
 
 	public History() {
 	}
 
 	public History(Integer record_id, String movement_type, Double amount, Integer client_id,
-			LocalDate transaction_date, Account account, String account_number) {
+			LocalDate transaction_date, Account account) {
 		this.record_id = record_id;
 		this.movement_type = movement_type;
 		this.amount = amount;
 		this.client_id = client_id;
 		this.transaction_date = transaction_date;
 		this.account = account;
-		this.account_number = account_number;
 	}
 
 	@PrePersist
 	public void prePersist() {
 		transaction_date = LocalDate.now();
-	}
-
-	public String getAccount_number() {
-		return account_number;
-	}
-
-	public void setAccount_number(String account_number) {
-		this.account_number = account_number;
 	}
 
 	public Integer getRecord_id() {
