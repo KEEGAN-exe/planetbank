@@ -50,6 +50,7 @@ public class Account implements Serializable {
 	private Client client;
 
 	@OneToMany(mappedBy = "account")
+	@JsonIgnore
 	private Collection<History> historyList;
 
 	public Account() {

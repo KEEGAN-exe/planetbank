@@ -30,30 +30,41 @@ public class History implements Serializable {
 	@Column(nullable = false)
 	private Double amount;
 	@Column(nullable = false)
-	private Client client_id;
+	private Integer client_id;
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
 	private LocalDate transaction_date;
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
+	@Column(nullable = false)
+	private String account_number;
 
 	public History() {
 	}
 
-	public History(Integer record_id, String movement_type, Double amount, Client client_id, LocalDate transaction_date,
-			Account account) {
+	public History(Integer record_id, String movement_type, Double amount, Integer client_id,
+			LocalDate transaction_date, Account account, String account_number) {
 		this.record_id = record_id;
 		this.movement_type = movement_type;
 		this.amount = amount;
 		this.client_id = client_id;
 		this.transaction_date = transaction_date;
 		this.account = account;
+		this.account_number = account_number;
 	}
 
 	@PrePersist
 	public void prePersist() {
 		transaction_date = LocalDate.now();
+	}
+
+	public String getAccount_number() {
+		return account_number;
+	}
+
+	public void setAccount_number(String account_number) {
+		this.account_number = account_number;
 	}
 
 	public Integer getRecord_id() {
@@ -88,11 +99,11 @@ public class History implements Serializable {
 		this.amount = amount;
 	}
 
-	public Client getClient_id() {
+	public Integer getClient_id() {
 		return client_id;
 	}
 
-	public void setClient_id(Client client_id) {
+	public void setClient_id(Integer client_id) {
 		this.client_id = client_id;
 	}
 
