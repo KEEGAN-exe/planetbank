@@ -10,6 +10,6 @@ import com.planetbank.entity.History;
 public interface HistoryRepository extends JpaRepository<History, Integer>{
 
 	
-	@Query(value = "SELECT * FROM records WHERE account_number = ?", nativeQuery = true)
+	@Query(value = "SELECT * FROM records WHERE account_id = ?", nativeQuery = true)
 	public abstract Collection<History> findByAccountNumber(String account_number);
 }
