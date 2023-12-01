@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planetbank.entity.Account;
+import com.planetbank.entity.History;
 import com.planetbank.entity.Movement;
 import com.planetbank.service.AccountService;
+import com.planetbank.service.HistoryService;
 
 @RestController
 @RequestMapping("/account")
@@ -21,6 +23,9 @@ public class AccountController {
 
 	@Autowired
 	private AccountService service;
+	
+	@Autowired
+	private HistoryService history;
 
 	@GetMapping
 	public ResponseEntity<?> getAccounts() {
@@ -87,6 +92,8 @@ public class AccountController {
 				if (data.getAmount() > 0) {
 					account.setBalance(account.getBalance() + data.getAmount());
 					service.update(account);
+					History record = new History(null, "deposit", data.getAmount(), account.getClient().getIdClient(), null, account, account.getAccountNumber());
+					history.insert(record);
 					return new ResponseEntity<>("Deposit completed successfully.", HttpStatus.OK);
 				}
 				return new ResponseEntity<>("Invalid amount", HttpStatus.BAD_REQUEST);
@@ -110,6 +117,8 @@ public class AccountController {
 					if (account.getWithdrawalKey().equals(data.getWithdrawalKey())) {
 						account.setBalance(account.getBalance() - data.getAmount());
 						service.update(account);
+						History record = new History(null, "withdraw", data.getAmount(), account.getClient().getIdClient(), null, account, account.getAccountNumber());
+						history.insert(record);
 						return new ResponseEntity<>("Withdrawmoney completed successfully.", HttpStatus.OK);
 					}
 
