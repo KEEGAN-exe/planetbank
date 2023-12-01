@@ -23,6 +23,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private AccountService accountService;
+	
 
 	String generatedUsername;
 	String generatedPassword;
