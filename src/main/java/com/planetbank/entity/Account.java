@@ -2,6 +2,7 @@ package com.planetbank.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -47,6 +49,9 @@ public class Account implements Serializable {
 	@JsonIgnore
 	private Client client;
 
+	@OneToMany(mappedBy = "account")
+	private Collection<History> historyList;
+
 	public Account() {
 	}
 
@@ -62,9 +67,30 @@ public class Account implements Serializable {
 		this.client = client;
 	}
 
+	public Account(Integer idAccount, String accountNumber, Double balance, LocalDate openingDate, Boolean state,
+			String status, String withdrawalKey, Client client, Collection<History> historyList) {
+		this.idAccount = idAccount;
+		this.accountNumber = accountNumber;
+		this.balance = balance;
+		this.openingDate = openingDate;
+		this.state = state;
+		this.status = status;
+		this.withdrawalKey = withdrawalKey;
+		this.client = client;
+		this.historyList = historyList;
+	}
+
 	@PrePersist
 	public void PreDate() {
 		this.openingDate = LocalDate.now();
+	}
+
+	public Collection<History> getHistoryList() {
+		return historyList;
+	}
+
+	public void setHistoryList(Collection<History> historyList) {
+		this.historyList = historyList;
 	}
 
 	public String getWithdrawalKey() {
